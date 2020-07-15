@@ -1,11 +1,8 @@
-import styled from 'styled-components';
+import React from 'react';
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: calc(100vh - 50px);
-`;
+const Container = props => {
+  const { children } = props;
+  return <div>{children}</div>;
+};
 
 export default Container;

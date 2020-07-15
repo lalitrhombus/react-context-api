@@ -1,11 +1,8 @@
-import styled from 'styled-components';
+import React from 'react';
 
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-`;
+const Content = props => {
+  const { children } = props;
+  return <div>{children}</div>;
+};
 
 export default Content;

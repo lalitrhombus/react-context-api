@@ -1,17 +1,21 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Formik } from 'formik';
 import Button from '../../../components/button';
-import FormGroup from '../../../components/form/formGroup';
-import Input from '../../../components/form/input';
-import ErrorText from '../../../components/form/error';
 
-const LoginForm = props => (
-  <Formik initialValues={{ username: '', password: '' }} {...props}>
-    {({ handleChange, handleBlur, values, handleSubmit, errors }) => (
-      <FormGroup>
-        {errors.genericError && <ErrorText>{errors.genericError}</ErrorText>}
-        <Input
+const LoginForm = props => {
+  const errors = {};
+  const values = {};
+
+  const { onSubmit } = props;
+
+  function handleChange() {}
+
+  function handleBlur() {}
+
+  return (
+    <div>
+      <fieldset>
+        <input
           name="username"
           id="username"
           placeholder="Username"
@@ -20,22 +24,20 @@ const LoginForm = props => (
           error={errors.username}
           value={values.username}
         />
-        <Input
+        <input
           id="password"
           name="password"
           type="password"
           placeholder="Password"
           onChange={handleChange('password')}
-          onBlur={handleBlur('password')}
-          error={errors.password}
           value={values.password}
         />
-        <Button primary large onClick={handleSubmit} type="submit">
+        <Button primary large onClick={onSubmit} type="submit">
           Login
         </Button>
-      </FormGroup>
-    )}
-  </Formik>
-);
+      </fieldset>
+    </div>
+  );
+};
 
 export default LoginForm;

@@ -1,11 +1,8 @@
-import styled from 'styled-components';
-import theme from '../../../components/theme';
+import React from 'react';
 
-const Card = styled.li`
-  border-radius: 3px;
-  background: ${theme.colors.bg};
-  margin: 10px;
-  padding: 15px;
-`;
+const Card = props => {
+  const { children } = props;
+  return <li>{children}</li>;
+};
 
 export default Card;

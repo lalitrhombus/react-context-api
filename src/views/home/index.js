@@ -24,8 +24,9 @@ const Home = () => {
       <List>
         {product?.list?.map(p => (
           <Card key={p.id}>
-            <h1>{p.title}</h1>
-            <span>${p.price}</span>
+            <h1>{p.name}</h1>
+            <img src={p.avatar} alt="simple avatar" />
+            <span>Created at: {p.createdAt}</span>
           </Card>
         ))}
       </List>

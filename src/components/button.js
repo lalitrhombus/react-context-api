@@ -1,23 +1,9 @@
-import styled from 'styled-components';
-import theme from './theme';
+import React from 'react';
 
-const Button = styled.button`
-  transition: all 0.3s ease;
-  background: ${props =>
-    theme.colors[Object.keys(props).find(p => theme.colors[p])] ||
-    theme.colors.primary};
-  text-transform: ${props => (props.upper ? 'uppercase' : 'none')};
-  font-weight: 300;
-  color: ${theme.colors.default};
-  padding: 9px 13px;
-  margin: 1px;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  width: ${props => (props.large ? '100%' : 'auto')};
-  &:hover {
-    opacity: 0.7;
-  }
-`;
+const MainButton = props => {
+  const { children, onClick } = props;
+  // eslint-disable-next-line react/button-has-type
+  return <button onClick={onClick}>{children}</button>;
+};
 
-export default Button;
+export default MainButton;

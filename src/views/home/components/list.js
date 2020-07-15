@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import React from 'react';
 
-const List = styled.ul`
-  display: flex;
-  flex-flow: row wrap;
-`;
+const List = props => {
+  const { children } = props;
+  return <ul>{children}</ul>;
+};
 
 export default List;

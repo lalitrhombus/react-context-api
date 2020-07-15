@@ -4,21 +4,19 @@ import { StateProvider } from '../state';
 import { INITIAL_STATE as AUTH_INITIAL_STATE } from '../state/auth/reducers';
 import { INITIAL_STATE as PRODUCT_INITIAL_STATE } from '../state/product/reducers';
 import reducers from '../state/reducers';
-import BaseStyles from './base-styles';
 import PrivateRoute from './private-route';
 import Content from '../components/content';
 import Header from '../components/header';
 import Login from '../views/login';
 import Home from '../views/home';
 
-const Root = props => {
+const Root = () => {
   const initialState = {
     auth: AUTH_INITIAL_STATE,
     product: PRODUCT_INITIAL_STATE,
   };
   return (
     <StateProvider initialState={initialState} reducer={reducers}>
-      <BaseStyles />
       <Router>
         <>
           <Header />
