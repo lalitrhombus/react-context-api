@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useStateValue } from '../state';
 import { logout } from '../state/auth/actions';
 
 import Button from './button';
 
-const Header = () => {
+const Header = React.memo(() => {
   const [{ auth }, dispatch] = useStateValue();
+
+  useEffect(() => {
+    console.log('i am header component..');
+  }, [auth]);
 
   const handleLogout = async () => {
     await dispatch(logout());
@@ -15,15 +19,15 @@ const Header = () => {
   return (
     <nav>
       <header>Header</header>
-      <sidebar>
+      <aside>
         {auth.logged && (
           <Button gradient onClick={() => handleLogout()}>
             Logout
           </Button>
         )}
-      </sidebar>
+      </aside>
     </nav>
   );
-};
+});
 
 export default Header;
