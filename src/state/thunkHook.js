@@ -1,44 +1,54 @@
-function useThunk(reducer, initialState) {
-  // Keep track of mounted state to prevent async calls for updating state and leaking
-  const mounted = useRef(true);
-  useEffect(() => () => (mounted.current = false), []);
+/* eslint-disable no-console */
+/* eslint-disable react/button-has-type */
+import React, { useReducer, useRef } from 'react';
+import ReactDOM from 'react-dom';
+import axios from 'axios';
 
-  // Setup underlying useReducer core
-  const [state, dispatch] = useReducer(reducer, initialState);
-
-  // Create a "safe" dispatch for using with async ops
-  function mountedDispatch(action) {
-    if (mounted.current) {
+function useThunk([state, dispatch]) {
+  const newDispatchRef = useRef(action => {
+    if (typeof action === 'function') {
+      action(newDispatchRef.current);
+    } else {
       dispatch(action);
     }
-  }
-
-  // Create thunk function for request dispatch chains
-  function thunk(options, actions, args = {}, callback) {
-    mountedDispatch({ type: actions[0], args });
-    request(options)
-      .then(response => {
-        mountedDispatch({ type: actions[1], response, args });
-        if (callback) callback();
-      })
-      .catch(error => {
-        mountedDispatch({ type: actions[2], error, args });
-      });
-  }
-
-  // Return in 'tuple' [state, thunk, dispatch]
-  return [state, thunk, mountedDispatch];
+  });
+  return [state, newDispatchRef.current];
 }
 
-function MyProvider(props) {
-  const thunk = useThunk(reducer, { count: 0, loading: false, err: undefined });
-  return <MyContext.Provider value={thunk} {...props} />;
+function reducer(state, action) {
+  switch (action.type) {
+    case 'FETCHING_DATA':
+      return { ...state, isLoading: true };
+    case 'FETCHED_DATA':
+      return { ...state, isLoading: false, data: action.payload };
+    default:
+      console.error('No Type Matched');
+      return new Error();
+  }
 }
 
-function useThunkContext() {
-  const context = useContext(MyContext);
-  if (!context) {
-    throw new Error("Must be used within <MyProvider />");
-  }
-  return context;
+function getTopPosts() {
+  return async dispatch => {
+    dispatch({ type: 'FETCHING_DATA' });
+    const posts = await axios
+      .get('https://www.reddit.com/r/mysubreddit/top/.json?count=20')
+      .then(response => response.data);
+    dispatch({ type: 'FETCHED_DATA', payload: posts });
+  };
 }
+
+function App() {
+  const [state, dispatch] = useThunk(
+    useReducer(reducer, { isLoading: false, data: {} })
+  );
+
+  return (
+    <div>
+      <button onClick={() => dispatch(getTopPosts())}>Fetch Data</button>
+      <code>{JSON.stringify(state, null, 2)}</code>
+    </div>
+  );
+}
+
+const rootElement = document.getElementById('root');
+ReactDOM.render(<App />, rootElement);
